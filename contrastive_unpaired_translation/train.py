@@ -6,10 +6,29 @@ from data import create_dataset
 from models import create_model
 # from util.visualizer import Visualizer
 from tensorboardX import SummaryWriter
+from torchvision.utils import make_grid
+from torchvision import transforms, utils
+
+
+def write_current_visuals(visuals, step, writer, trans):
+    for label, image in visuals.items():
+        visuals[label] = trans(image.clamp(-1, 1))
+    batch_size = image.size(0)
+    tensor_list = []
+    for idx in range(batch_size):
+        tensor_list.append(visuals['real_A'][idx])
+        tensor_list.append(visuals['fake_B'][idx])
+        tensor_list.append(visuals['real_B'][idx])
+        tensor_list.append(visuals['idt_B'][idx])
+    grid = make_grid(tensor_list, nrow=4)
+    writer.add_image('image_samples', grid, step)
 
 
 if __name__ == '__main__':
     writer = SummaryWriter('writer')
+    trans_data = transforms.Compose([
+        transforms.Normalize((-1., -1., -1.), (2., 2., 2.))
+    ])
     opt = TrainOptions().parse()   # get training options
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
     dataset_size = len(dataset)    # get the number of images in the dataset.
@@ -52,16 +71,10 @@ if __name__ == '__main__':
                 torch.cuda.synchronize()
             optimize_time = (time.time() - optimize_start_time) / batch_size * 0.005 + 0.995 * optimize_time
 
-            model.compute_visuals()
-            for label, image in model.get_current_visuals().items():
-                print(label)
-                print(image.size())
-            break
-
             if total_iters % opt.display_freq == 0:   # display images on visdom and save images to a HTML file
                 save_result = total_iters % opt.update_html_freq == 0
                 model.compute_visuals()
-                tensor_list
+                write_current_visuals(model.get_current_visuals(), total_iters, writer, trans_data)
                 # visualizer.display_current_results(model.get_current_visuals(), epoch, save_result)
 
             if total_iters % opt.print_freq == 0:    # print training losses and save logging information to the disk
