@@ -107,12 +107,12 @@ def get_args():
 
     # align cfd images
     parser.add_argument('-align_cfd', '--align_cfd', default=False, action='store_true')
-    parser.add_argument('-cfd_path', '--cfd_path', default='/root/lib/', type=str)
-    parser.add_argument('-aligned_cfd_path', '--aligned_cfd_path', default='/root/lib/', type=str)
+    parser.add_argument('-cfd_path', '--cfd_path', default='/root/lib/rederer_tmp/data/cfd_version_3_0/Images/CFD', type=str)
+    parser.add_argument('-aligned_cfd_path', '--aligned_cfd_path', default='/root/lib/rederer_tmp/data/cfd_aligned', type=str)
 
     # visualize images
     parser.add_argument('-visualize', '--visualize', default=False, action='store_true')
-    parser.add_argument('-visualize_path', '--visualize_path', default='/root/lib/GAR/data/ffhq_deep3d_aligned', type=str)
+    parser.add_argument('-visualize_path', '--visualize_path', default='/root/lib/rederer_tmp/data/cfd_aligned', type=str)
 
     args = parser.parse_args()
     return args
