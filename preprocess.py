@@ -88,7 +88,7 @@ def main(args):
 
         image_list = prepare_cfd(args.cfd_path)
         for image_path in tqdm(image_list):
-            image_aligned = align_image(image_path, lm3d_std)
+            image_aligned = align_image(image_path)
             if image_aligned is not None:
                 dir_name, image_name = image_path.split('/')[-2], image_path.split('/')[-1]
                 dir_path = os.path.join(args.aligned_cfd_path, dir_name)
