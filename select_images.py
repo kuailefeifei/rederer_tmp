@@ -38,8 +38,10 @@ def batch_select_images(input_path, output_path):
             output_name = dir_name.split('.')[0]
             output_list.append(os.path.join(output_path, output_name))
 
-    for video_path, image_path in zip(video_list, output_list):
-        select_images_from_video(video_path, image_path)
+    print(video_list)
+
+    # for video_path, image_path in zip(video_list, output_list):
+    #     select_images_from_video(video_path, image_path)
 
 
 def main(args):
