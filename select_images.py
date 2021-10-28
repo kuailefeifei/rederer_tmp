@@ -44,17 +44,47 @@ def batch_select_images(input_path, output_path):
         select_images_from_video(video_path, image_path)
 
 
+def select_ffhq(input_path, output_path, max_num):
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    count = 0
+    for image_name in tqdm(os.listdir(input_path)):
+        if random.random() < 0.1:
+            image_path = os.path.join(input_path, image_name)
+            image = Image.open(image_path).convert('RGB')
+            image_save_path = os.path.join(output_path, image_name)
+            image.save(image_save_path)
+            count += 1
+        if count >= max_num:
+            break
+
+    print('select %d images' % count)
+
+
 def main(args):
-    batch_select_images(args.input_path, args.output_path)
+    if args.select_digitman:
+        batch_select_images(args.input_path, args.output_path)
+
+    elif args.select_ffhq:
+        select_ffhq(args.ffhq_path, args.selected_ffhq_path, args.max_num)
 
 
 def get_parser():
     parser = argparse.ArgumentParser()
 
+    # select images from digitman videos
+    parser.add_argument('-select_digitman', '--select_digitman', default=False, action='store_true')
     parser.add_argument('-input_path', '--input_path',
 						default='/root/lib/rederer_tmp/data/metahuman', type=str)
     parser.add_argument('-output_path', '--output_path',
 						default='/root/lib/rederer_tmp/data/digitman', type=str)
+
+    # select images from ffhq dataset
+    parser.add_argument('-select_ffhq', '--select_ffhq', default=False, action='store_true')
+    parser.add_argument('-max_num', '--max_num', default=5000, type=int)
+    parser.add_argument('-ffhq_path', '--ffhq_path', default='/root/lib/rederer_tmp/data/ffhq_arcface_aligned', type=str)
+    parser.add_argument('-selected_ffhq_path', '--selected_ffhq_path', default='/root/lib/rederer_tmp/data/ffhq_aligned',
+                        type=str)
 
     return parser
 
