@@ -49,7 +49,7 @@ def prepare_digit(dataset_path):
     return image_list
 
 
-def align_image(input_path, detect_size=640):
+def align_image(input_path, detect_size=1024):
     try:
         image = Image.open(input_path)
         image, inv_tfm = align_with_retinaface(image, retinaface_detector, detect_size=detect_size)
