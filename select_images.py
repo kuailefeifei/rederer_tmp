@@ -32,16 +32,16 @@ def select_images_from_video(video_path, output_path):
 def batch_select_images(input_path, output_path):
     video_list, output_list = [], []
     for dir_name in sorted(os.listdir(input_path)):
+        if dir_name.startswith('.'):
+            continue
         if dir_name.endswith('.mov'):
             video_path = os.path.join(input_path, dir_name)
             video_list.append(video_path)
             output_name = dir_name.split('.')[0]
             output_list.append(os.path.join(output_path, output_name))
 
-    print(video_list)
-
-    # for video_path, image_path in zip(video_list, output_list):
-    #     select_images_from_video(video_path, image_path)
+    for video_path, image_path in zip(video_list, output_list):
+        select_images_from_video(video_path, image_path)
 
 
 def main(args):
