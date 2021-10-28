@@ -38,7 +38,7 @@ def prepare_cfd(dataset_path):
     return image_list
 
 
-def prepare_digit(dataset_path):
+def prepare_digitman(dataset_path):
     image_list = []
     for dir_name in os.listdir(dataset_path):
         dir_path = os.path.join(dataset_path, dir_name)
@@ -97,6 +97,21 @@ def main(args):
                 image_save_path = os.path.join(dir_path, image_name)
                 image_aligned.save(image_save_path)
 
+    elif args.align_digitman:
+        if not os.path.exists(args.aligned_digitman_path):
+            os.makedirs(args.aligned_digitman_path)
+
+        image_list = prepare_digitman(args.digitman_path)
+        for image_path in tqdm(image_list):
+            image_aligned = align_image(image_path)
+            if image_aligned is not None:
+                dir_name, image_name = image_path.split('/')[-2], image_path.split('/')[-1]
+                dir_path = os.path.join(args.aligned_digitman_path, dir_name)
+                if not os.path.exists(dir_path):
+                    os.makedirs(dir_path)
+                image_save_path = os.path.join(dir_path, image_name)
+                image_aligned.save(image_save_path)
+
     elif args.visualize:
         image_list = prepare_digit(args.visualize_path)
         visualize_image(image_list)
@@ -110,9 +125,16 @@ def get_args():
     parser.add_argument('-cfd_path', '--cfd_path', default='/root/lib/rederer_tmp/data/cfd_version_3_0/Images/CFD', type=str)
     parser.add_argument('-aligned_cfd_path', '--aligned_cfd_path', default='/root/lib/rederer_tmp/data/cfd_aligned', type=str)
 
+    # align digit images
+    parser.add_argument('-align_digitman', '--align_digitman', default=False, action='store_true')
+    parser.add_argument('-digitman_path', '--digitman_path', default='/root/lib/rederer_tmp/data/digitman',
+                        type=str)
+    parser.add_argument('-aligned_digitman_path', '--aligned_digitman_path', default='/root/lib/rederer_tmp/data/digitman_aligned',
+                        type=str)
+
     # visualize images
     parser.add_argument('-visualize', '--visualize', default=False, action='store_true')
-    parser.add_argument('-visualize_path', '--visualize_path', default='/root/lib/rederer_tmp/data/cfd_aligned', type=str)
+    parser.add_argument('-visualize_path', '--visualize_path', default='/root/lib/rederer_tmp/data/digitman_aligned', type=str)
 
     args = parser.parse_args()
     return args
