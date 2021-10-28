@@ -113,7 +113,7 @@ def main(args):
                 image_aligned.save(image_save_path)
 
     elif args.visualize:
-        image_list = prepare_digit(args.visualize_path)
+        image_list = prepare_digitman(args.visualize_path)
         visualize_image(image_list)
 
 
