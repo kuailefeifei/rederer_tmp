@@ -75,9 +75,9 @@ def get_parser():
     # select images from digitman videos
     parser.add_argument('-select_digitman', '--select_digitman', default=False, action='store_true')
     parser.add_argument('-input_path', '--input_path',
-						default='/root/lib/rederer_tmp/data/metahuman', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_front', type=str)
     parser.add_argument('-output_path', '--output_path',
-						default='/root/lib/rederer_tmp/data/digitman', type=str)
+						default='/root/lib/rederer_tmp/data/digitman_front', type=str)
 
     # select images from ffhq dataset
     parser.add_argument('-select_ffhq', '--select_ffhq', default=False, action='store_true')
