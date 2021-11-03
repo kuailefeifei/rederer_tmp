@@ -49,6 +49,15 @@ def prepare_digitman(dataset_path):
     return image_list
 
 
+def prepare_normal(dataset_path):
+    image_list = []
+    for image_name in os.listdir(dataset_path):
+        image_path = os.path.join(dataset_path, image_name)
+        image_list.append(image_path)
+    print('there are %d images in total.' % len(image_list))
+    return image_list
+
+
 def align_image(input_path, detect_size=1024):
     try:
         image = Image.open(input_path)
@@ -113,7 +122,7 @@ def main(args):
                 image_aligned.save(image_save_path)
 
     elif args.visualize:
-        image_list = prepare_digitman(args.visualize_path)
+        image_list = prepare_normal(visualize_path)
         visualize_image(image_list)
 
 
