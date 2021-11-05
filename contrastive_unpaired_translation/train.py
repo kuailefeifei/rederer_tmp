@@ -74,13 +74,13 @@ if __name__ == '__main__':
             if total_iters % opt.display_freq == 0:   # display images on visdom and save images to a HTML file
                 save_result = total_iters % opt.update_html_freq == 0
                 model.compute_visuals()
-                write_current_visuals(model.get_current_visuals(), total_iters, writer, trans_data)
+                write_current_visuals(model.get_current_visuals(), total_iters // batch_size, writer, trans_data)
                 # visualizer.display_current_results(model.get_current_visuals(), epoch, save_result)
 
             if total_iters % opt.print_freq == 0:    # print training losses and save logging information to the disk
                 losses = model.get_current_losses()
                 for k, v in losses.items():
-                    writer.add_scalar(k, v, total_iters)
+                    writer.add_scalar(k, v, total_iters // batch_size)
 
                 # visualizer.print_current_losses(epoch, epoch_iter, losses, optimize_time, t_data)
                 # if opt.display_id is None or opt.display_id > 0:
