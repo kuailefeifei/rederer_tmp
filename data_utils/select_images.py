@@ -10,15 +10,20 @@ import numpy as np
 from mlcandy.media.video_reader import VideoReader
 
 
-def select_images_from_video(video_path, output_path):
+def select_images_from_video(video_path, output_path, thresh=20):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     max_num = 20
     count = 0
     input_video = VideoReader(video_path)
+    last_array = None
     for i, frame in enumerate(tqdm(input_video, desc="select frames from video")):
         if random.random() < 0.02:
             image = Image.fromarray(frame).convert('RGB')
+            image_array = np.array(image)
+            if last_array is not None and abs(image_array - last_array).sum() <= thresh:
+                continue
+            last_array = image_array
             image_name = '%04d.jpg' % i
             image_save_path = os.path.join(output_path, image_name)
             image.save(image_save_path)
@@ -75,9 +80,9 @@ def get_parser():
     # select images from digitman videos
     parser.add_argument('-select_digitman', '--select_digitman', default=False, action='store_true')
     parser.add_argument('-input_path', '--input_path',
-						default='/root/lib/rederer_tmp/data/metahuman_front', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_video_v1', type=str)
     parser.add_argument('-output_path', '--output_path',
-						default='/root/lib/rederer_tmp/data/digitman_front', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_v1', type=str)
 
     # select images from ffhq dataset
     parser.add_argument('-select_ffhq', '--select_ffhq', default=False, action='store_true')
