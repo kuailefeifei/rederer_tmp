@@ -10,7 +10,7 @@ import numpy as np
 from mlcandy.media.video_reader import VideoReader
 
 
-def select_images_from_video(video_path, output_path, thresh=20):
+def select_images_from_video(video_path, output_path, select_rate=0.04, thresh=20):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     max_num = 20
@@ -18,7 +18,7 @@ def select_images_from_video(video_path, output_path, thresh=20):
     input_video = VideoReader(video_path)
     last_array = None
     for i, frame in enumerate(tqdm(input_video, desc="select frames from video")):
-        if random.random() < 0.02:
+        if random.random() < select_rate:
             image = Image.fromarray(frame).convert('RGB')
             image_array = np.array(image)
             if last_array is not None and abs(image_array - last_array).sum() <= thresh:
@@ -39,7 +39,7 @@ def batch_select_images(input_path, output_path):
     for dir_name in sorted(os.listdir(input_path)):
         if dir_name.startswith('.'):
             continue
-        if dir_name.endswith('.mov'):
+        if dir_name.endswith('.mov') or dir_name.endswith('.mp4'):
             video_path = os.path.join(input_path, dir_name)
             video_list.append(video_path)
             output_name = dir_name.split('.')[0]
@@ -80,9 +80,9 @@ def get_parser():
     # select images from digitman videos
     parser.add_argument('-select_digitman', '--select_digitman', default=False, action='store_true')
     parser.add_argument('-input_path', '--input_path',
-						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_video_v1', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_video_v2', type=str)
     parser.add_argument('-output_path', '--output_path',
-						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_v1', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_08_v2', type=str)
 
     # select images from ffhq dataset
     parser.add_argument('-select_ffhq', '--select_ffhq', default=False, action='store_true')
