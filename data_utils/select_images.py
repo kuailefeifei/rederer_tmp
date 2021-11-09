@@ -38,7 +38,7 @@ def batch_select_images(input_path, output_path):
     for dir_name in sorted(os.listdir(input_path)):
         if dir_name.startswith('.'):
             continue
-        if dir_name.endswith('.mov'):
+        if dir_name.endswith('.mov') or dir_name.endswith('.mp4'):
             video_path = os.path.join(input_path, dir_name)
             video_list.append(video_path)
             output_name = dir_name.split('.')[0]
