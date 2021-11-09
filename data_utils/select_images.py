@@ -14,10 +14,15 @@ def select_images_from_video(video_path, output_path):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     max_num = 20
+    min_dist = 10
     count = 0
     input_video = VideoReader(video_path)
+    last_idx = None
     for i, frame in enumerate(tqdm(input_video, desc="select frames from video")):
-        if random.random() < 0.02:
+        if random.random() < 0.04:
+            if last_idx is not None and (i - last_idx) < min_dist:
+                continue
+            last_idx = i
             image = Image.fromarray(frame).convert('RGB')
             image_name = '%04d.jpg' % i
             image_save_path = os.path.join(output_path, image_name)
@@ -75,9 +80,9 @@ def get_parser():
     # select images from digitman videos
     parser.add_argument('-select_digitman', '--select_digitman', default=False, action='store_true')
     parser.add_argument('-input_path', '--input_path',
-						default='/root/lib/rederer_tmp/data/metahuman_front', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_09_video', type=str)
     parser.add_argument('-output_path', '--output_path',
-						default='/root/lib/rederer_tmp/data/digitman_front', type=str)
+						default='/root/lib/rederer_tmp/data/metahuman_2021_11_09', type=str)
 
     # select images from ffhq dataset
     parser.add_argument('-select_ffhq', '--select_ffhq', default=False, action='store_true')
