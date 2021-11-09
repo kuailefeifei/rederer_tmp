@@ -127,9 +127,9 @@ def get_args():
 
     # align digit images
     parser.add_argument('-align_digitman', '--align_digitman', default=False, action='store_true')
-    parser.add_argument('-digitman_path', '--digitman_path', default='/root/lib/rederer_tmp/data/digitman',
+    parser.add_argument('-digitman_path', '--digitman_path', default='/root/lib/rederer_tmp/data/metahuman_2021_11_09',
                         type=str)
-    parser.add_argument('-aligned_digitman_path', '--aligned_digitman_path', default='/root/lib/rederer_tmp/data/digitman_aligned',
+    parser.add_argument('-aligned_digitman_path', '--aligned_digitman_path', default='/root/lib/rederer_tmp/data/metahuman_2021_11_09_aligned',
                         type=str)
 
     # visualize images
